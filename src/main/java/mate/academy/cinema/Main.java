@@ -35,11 +35,7 @@ public class Main {
         MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(movieSession);
-        System.out.println("------------");
         movieSessionService.findAvailableSessions(movie.getId(), LocalDate.now())
                 .forEach(System.out::println);
-        System.out.println("------------");
-        movieSessionService.findAvailableSessions(movie.getId(),
-                LocalDate.of(2020, 4, 4)).forEach(System.out::println);
     }
 }
