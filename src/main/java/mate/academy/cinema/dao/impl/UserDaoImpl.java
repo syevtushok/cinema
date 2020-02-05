@@ -1,41 +1,41 @@
 package mate.academy.cinema.dao.impl;
 
-import java.util.List;
-
-import mate.academy.cinema.dao.CinemaHallDao;
+import mate.academy.cinema.dao.UserDao;
 import mate.academy.cinema.exceptions.DataProcessingException;
 import mate.academy.cinema.lib.Dao;
-import mate.academy.cinema.model.CinemaHall;
+import mate.academy.cinema.model.User;
 import mate.academy.cinema.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
-public class CinemaHallDaoImpl implements CinemaHallDao {
-
+public class UserDaoImpl implements UserDao {
     @Override
-    public CinemaHall add(CinemaHall cinemaHall) {
+    public User add(User user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Long cinemaHallId = (Long) session.save(cinemaHall);
+            Long userId = (Long) session.save(user);
             transaction.commit();
-            cinemaHall.setId(cinemaHallId);
-            return cinemaHall;
+            user.setId(userId);
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
-                transaction.rollback();
+                transaction.commit();
             }
-            throw new RuntimeException("Cannot add cinema hall", e);
+            throw new DataProcessingException("Cannot create user ", e);
         }
     }
 
     @Override
-    public List<CinemaHall> getAll() {
+    public User findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return (List<CinemaHall>) session.createQuery("From CinemaHall").list();
+            Query<User> query = session.createQuery("from User where email = :email");
+            query.setParameter("email", email);
+            return query.getSingleResult();
         } catch (Exception e) {
-            throw new DataProcessingException("Error retrieving all cinema halls ", e);
+            throw new DataProcessingException("Cannot find user by email " + email, e);
         }
     }
 }

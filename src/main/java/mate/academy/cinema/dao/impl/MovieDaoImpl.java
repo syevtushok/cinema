@@ -9,14 +9,11 @@ import mate.academy.cinema.exceptions.DataProcessingException;
 import mate.academy.cinema.lib.Dao;
 import mate.academy.cinema.model.Movie;
 import mate.academy.cinema.util.HibernateUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 @Dao
 public class MovieDaoImpl implements MovieDao {
-    private static final Logger LOGGER = LogManager.getLogger(MovieDaoImpl.class);
 
     @Override
     public Movie add(Movie movie) {
