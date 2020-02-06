@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import mate.academy.cinema.exceptions.AuthenticationException;
 import mate.academy.cinema.lib.Injector;
 import mate.academy.cinema.model.CinemaHall;
 import mate.academy.cinema.model.Movie;
@@ -21,7 +22,7 @@ public class Main {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
     private static Injector injector = Injector.getInstance("mate.academy.cinema");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException {
         movieTest();
         userTest();
         authenticationTest();
@@ -60,7 +61,7 @@ public class Main {
         System.out.println(userService.findByEmail("a@a.a"));
     }
 
-    private static void authenticationTest() {
+    private static void authenticationTest() throws AuthenticationException {
         AuthenticationService service =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         service.register("b@b.b", "b");
