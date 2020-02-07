@@ -3,17 +3,20 @@ package mate.academy.cinema;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import mate.academy.cinema.exceptions.AuthenticationException;
 import mate.academy.cinema.lib.Injector;
 import mate.academy.cinema.model.CinemaHall;
 import mate.academy.cinema.model.Movie;
 import mate.academy.cinema.model.MovieSession;
+import mate.academy.cinema.model.ShoppingCart;
 import mate.academy.cinema.model.User;
 import mate.academy.cinema.service.AuthenticationService;
 import mate.academy.cinema.service.CinemaHallService;
 import mate.academy.cinema.service.MovieService;
 import mate.academy.cinema.service.MovieSessionService;
+import mate.academy.cinema.service.ShoppingCartService;
 import mate.academy.cinema.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +29,7 @@ public class Main {
         movieTest();
         userTest();
         authenticationTest();
+        hw273Test();
     }
 
     private static void movieTest() {
@@ -66,7 +70,21 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         service.register("b@b.b", "b");
         System.out.println("Correct data " + service.login("b@b.b", "b"));
-        System.out.println(service.login("Wrong email " + "bbbbbb@b.r", "b"));
-        System.out.println(service.login("Wrong password" + "b@b.b", "aasagdfgb"));
+    }
+
+    private static void hw273Test() throws AuthenticationException {
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        List<MovieSession> availabeMovies = movieSessionService.findAvailableSessions(1L,
+                LocalDate.of(2020, 2, 6));
+        AuthenticationService service =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User user = service.login("b@b.b", "b");
+        ShoppingCartService cartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        MovieSession movieSession = availabeMovies.get(0);
+        cartService.addSession(movieSession, user);
+        ShoppingCart shoppingCart = cartService.getByUser(user);
+        System.out.println(shoppingCart);
     }
 }

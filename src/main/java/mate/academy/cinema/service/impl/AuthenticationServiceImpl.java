@@ -5,6 +5,7 @@ import mate.academy.cinema.lib.Inject;
 import mate.academy.cinema.lib.Service;
 import mate.academy.cinema.model.User;
 import mate.academy.cinema.service.AuthenticationService;
+import mate.academy.cinema.service.ShoppingCartService;
 import mate.academy.cinema.service.UserService;
 import mate.academy.cinema.util.HashUtil;
 
@@ -12,6 +13,8 @@ import mate.academy.cinema.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     UserService userService;
+    @Inject
+    ShoppingCartService shoppingCartService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -28,6 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        return userService.add(user);
+
+        User userFromDataBase = userService.add(user);
+        shoppingCartService.registerNewShoppingCart(userFromDataBase);
+        return userFromDataBase;
     }
 }
