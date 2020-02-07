@@ -16,6 +16,7 @@ import mate.academy.cinema.service.AuthenticationService;
 import mate.academy.cinema.service.CinemaHallService;
 import mate.academy.cinema.service.MovieService;
 import mate.academy.cinema.service.MovieSessionService;
+import mate.academy.cinema.service.OrderService;
 import mate.academy.cinema.service.ShoppingCartService;
 import mate.academy.cinema.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +31,7 @@ public class Main {
         userTest();
         authenticationTest();
         hw273Test();
+        hw274Test();
     }
 
     private static void movieTest() {
@@ -48,7 +50,8 @@ public class Main {
         MovieSession movieSession = new MovieSession();
         movieSession.setCinemaHall(cinemaHall);
         movieSession.setMovie(movie);
-        movieSession.setShowTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 30)));
+        movieSession.setShowTime(LocalDateTime.of(LocalDate.of(2020, 2, 6),
+                LocalTime.of(12, 30)));
         MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(movieSession);
@@ -62,14 +65,14 @@ public class Main {
         user.setPassword("a");
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
-        System.out.println(userService.findByEmail("a@a.a"));
+        LOGGER.info(userService.findByEmail("a@a.a"));
     }
 
     private static void authenticationTest() throws AuthenticationException {
         AuthenticationService service =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         service.register("b@b.b", "b");
-        System.out.println("Correct data " + service.login("b@b.b", "b"));
+        LOGGER.info("Correct data " + service.login("b@b.b", "b"));
     }
 
     private static void hw273Test() throws AuthenticationException {
@@ -85,6 +88,25 @@ public class Main {
         MovieSession movieSession = availabeMovies.get(0);
         cartService.addSession(movieSession, user);
         ShoppingCart shoppingCart = cartService.getByUser(user);
-        System.out.println(shoppingCart);
+        LOGGER.info(shoppingCart);
+    }
+
+    private static void hw274Test() throws AuthenticationException {
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        List<MovieSession> availabeMovies = movieSessionService.findAvailableSessions(1L,
+                LocalDate.of(2020, 2, 6));
+        AuthenticationService service =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User user = service.login("b@b.b", "b");
+        ShoppingCartService cartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        MovieSession movieSession = availabeMovies.get(0);
+        cartService.addSession(movieSession, user);
+        ShoppingCart shoppingCart = cartService.getByUser(user);
+        LOGGER.info(shoppingCart);
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        orderService.completeOrder(shoppingCart.getTickets(), user);
+        LOGGER.info(orderService.getOrderHistory(user));
     }
 }
