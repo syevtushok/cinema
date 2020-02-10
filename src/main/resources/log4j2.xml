@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG">
+<Configuration status="error">
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT">
             <PatternLayout pattern="%style{%date{DEFAULT}}{yellow}
-      %highlight{%-5level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green}
+%highlight{%-5level}{TRACE=blue, FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green}
       %message\n"/>
         </Console>
     </Appenders>
+
     <Loggers>
-        <Root level="DEBUG">
+        <Logger name="org.hibernate" level="info" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Logger name="org.hibernate.SQL" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Logger name="org.hibernate.type.descriptor.sql" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Root level="debug">
             <AppenderRef ref="ConsoleAppender"/>
         </Root>
     </Loggers>
