@@ -11,5 +11,5 @@ public interface ShoppingCartService {
 
     void registerNewShoppingCart(User user);
 
-    void clear(User user);
+    void clearByUser(User user);
 }
