@@ -10,6 +10,8 @@
     <packaging>war</packaging>
     <properties>
         <jdk.version>11</jdk.version>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.checkstyle.plugin.version>3.1.0</maven.checkstyle.plugin.version>
@@ -131,19 +133,5 @@
                 </configuration>
             </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
-                    <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 </project>
