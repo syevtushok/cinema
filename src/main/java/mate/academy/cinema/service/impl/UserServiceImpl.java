@@ -1,16 +1,18 @@
 package mate.academy.cinema.service.impl;
 
 import mate.academy.cinema.dao.UserDao;
-import mate.academy.cinema.lib.Inject;
-import mate.academy.cinema.lib.Service;
 import mate.academy.cinema.model.User;
 import mate.academy.cinema.service.UserService;
 import mate.academy.cinema.util.HashUtil;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Inject
-    private UserDao userDao;
+    private final UserDao userDao;
+
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public User add(User user) {
