@@ -34,24 +34,31 @@ public class MovieSessionController {
     }
 
     @PostMapping
-    public void createMovieSession(@RequestBody MovieSessionRequestDto movieSessionRequestDto) {
+    public MovieSessionResponseDto createMovieSession(
+            @RequestBody MovieSessionRequestDto movieSessionRequestDto) {
+        MovieSession movieSession = getMovieSession(movieSessionRequestDto);
+        return getMovieSessionResponseDto(movieSession);
+    }
+
+    @GetMapping("/available")
+    public List<MovieSessionResponseDto> getAllMovieSessionResponseDto(@RequestParam Long movieId,
+                                                                       @RequestParam String date) {
+        return movieSessionService.findAvailableSessions(movieId, LocalDate.parse(date)).stream()
+                .map(this::getMovieSessionResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    private MovieSession getMovieSession(MovieSessionRequestDto movieSessionRequestDto) {
         MovieSession movieSession = new MovieSession();
         movieSession.setShowTime(LocalDateTime.parse(movieSessionRequestDto.getShowTime()));
         movieSession.setMovie(movieService.getById(movieSessionRequestDto.getMovieId()));
         movieSession.setCinemaHall(cinemaHallService.getById(movieSessionRequestDto
                 .getCinemaHallId()));
         movieSessionService.add(movieSession);
+        return movieSession;
     }
 
-    @GetMapping("/available")
-    public List<MovieSessionResponseDto> getMovieSessionResponseDto(@RequestParam Long movieId,
-                                                                    @RequestParam String date) {
-        return movieSessionService.findAvailableSessions(movieId, LocalDate.parse(date)).stream()
-                .map(this::movieSessionResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    private MovieSessionResponseDto movieSessionResponseDto(MovieSession movieSession) {
+    private MovieSessionResponseDto getMovieSessionResponseDto(MovieSession movieSession) {
         MovieSessionResponseDto movieSessionResponseDto = new MovieSessionResponseDto();
         movieSessionResponseDto.setCinemaHallId(movieSession.getCinemaHall().getId());
         movieSessionResponseDto.setMovieId(movieSession.getMovie().getId());

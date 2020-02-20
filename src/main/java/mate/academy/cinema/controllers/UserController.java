@@ -20,12 +20,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/")
-    public void createUser(@RequestBody UserRequestDto userRequestDto) {
+    @PostMapping
+    public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto) {
         User user = new User();
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());
         userService.add(user);
+        return getUserResponseDto(user);
     }
 
     @GetMapping("/byemail{email}")

@@ -33,16 +33,20 @@ public class OrderController {
     @PostMapping("/complete")
     public OrderResponseDto completeOrder(@RequestBody OrderRequestDto orderRequestDto) {
         Order order = orderService.completeOrder(userService.getById(orderRequestDto.getUserId()));
-        OrderResponseDto orderResponseDto = new OrderResponseDto();
-        orderResponseDto.setTickets(getListTicketsResponseDto(order));
-        orderResponseDto.setOrderId(order.getId());
-        orderResponseDto.setUserId(orderRequestDto.getUserId());
-        return orderResponseDto;
+        return getOrderResponseDto(order);
     }
 
     @GetMapping("/{userId}")
     public List<Order> getAllOrders(@PathVariable Long userId) {
         return orderService.getOrderHistory(userService.getById(userId));
+    }
+
+    private OrderResponseDto getOrderResponseDto(Order order) {
+        OrderResponseDto orderResponseDto = new OrderResponseDto();
+        orderResponseDto.setTickets(getListTicketsResponseDto(order));
+        orderResponseDto.setOrderId(order.getId());
+        orderResponseDto.setUserId(order.getUser().getId());
+        return orderResponseDto;
     }
 
     private List<TicketResponseDto> getListTicketsResponseDto(Order order) {
