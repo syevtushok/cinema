@@ -5,7 +5,7 @@ import java.util.List;
 
 import mate.academy.cinema.dao.OrderDao;
 import mate.academy.cinema.model.Order;
-import mate.academy.cinema.model.Ticket;
+import mate.academy.cinema.model.ShoppingCart;
 import mate.academy.cinema.model.User;
 import mate.academy.cinema.service.OrderService;
 import mate.academy.cinema.service.ShoppingCartService;
@@ -22,11 +22,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order completeOrder(List<Ticket> tickets, User user) {
+    public Order completeOrder(User user) {
+        ShoppingCart shoppingCartByUser = shoppingCartService.getByUser(user);
         Order order = new Order();
-        order.setOrderDate(LocalDateTime.now());
-        order.setTickets(tickets);
+        order.setTickets(shoppingCartByUser.getTickets());
         order.setUser(user);
+        order.setOrderDate(LocalDateTime.now());
 
         shoppingCartService.clearByUser(user);
         return orderDao.add(order);
@@ -35,5 +36,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderHistory(User user) {
         return orderDao.getAllUserOrders(user);
+    }
+
+    @Override
+    public Order getById(Long id) {
+        return orderDao.getById(id);
     }
 }

@@ -10,4 +10,5 @@ public interface MovieSessionDao {
 
     MovieSession add(MovieSession session);
 
+    MovieSession getById(Long id);
 }

@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 public class TicketDaoImpl implements TicketDao {
     private SessionFactory sessionFactory;
 
+    public TicketDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public Ticket add(Ticket ticket) {
         Transaction transaction = null;

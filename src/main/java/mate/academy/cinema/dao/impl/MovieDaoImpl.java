@@ -14,7 +14,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class MovieDaoImpl implements MovieDao {
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
+
+    public MovieDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Movie add(Movie movie) {
@@ -43,5 +47,10 @@ public class MovieDaoImpl implements MovieDao {
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all movies. ", e);
         }
+    }
+
+    @Override
+    public Movie getById(Long id) {
+        return sessionFactory.openSession().get(Movie.class, id);
     }
 }
