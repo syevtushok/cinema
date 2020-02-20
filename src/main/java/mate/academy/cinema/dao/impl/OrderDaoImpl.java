@@ -15,6 +15,10 @@ import org.springframework.stereotype.Repository;
 public class OrderDaoImpl implements OrderDao {
     private SessionFactory sessionFactory;
 
+    public OrderDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public Order add(Order order) {
         Transaction transaction = null;
@@ -40,5 +44,10 @@ public class OrderDaoImpl implements OrderDao {
                                        + "= :user",
                     Order.class).setParameter("user", user).list();
         }
+    }
+
+    @Override
+    public Order getById(Long id) {
+        return sessionFactory.openSession().get(Order.class, id);
     }
 }

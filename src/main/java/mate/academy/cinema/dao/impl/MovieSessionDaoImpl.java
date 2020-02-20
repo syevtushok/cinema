@@ -16,6 +16,10 @@ import org.springframework.stereotype.Repository;
 public class MovieSessionDaoImpl implements MovieSessionDao {
     private SessionFactory sessionFactory;
 
+    public MovieSessionDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = sessionFactory.openSession()) {
@@ -49,5 +53,10 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             }
             throw new RuntimeException("Cannot add movie session", e);
         }
+    }
+
+    @Override
+    public MovieSession getById(Long id) {
+        return sessionFactory.openSession().get(MovieSession.class, id);
     }
 }

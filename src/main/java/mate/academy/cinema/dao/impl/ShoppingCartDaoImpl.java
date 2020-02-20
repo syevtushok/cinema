@@ -14,6 +14,10 @@ import org.springframework.stereotype.Repository;
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     private SessionFactory sessionFactory;
 
+    public ShoppingCartDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         Transaction transaction = null;
