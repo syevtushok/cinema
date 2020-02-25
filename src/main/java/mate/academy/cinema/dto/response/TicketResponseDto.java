@@ -1,8 +1,13 @@
 package mate.academy.cinema.dto.response;
 
+import javax.validation.constraints.NotEmpty;
+
 public class TicketResponseDto {
+    @NotEmpty
     private String cinemaHall;
+    @NotEmpty
     private String showTime;
+    @NotEmpty
     private String movie;
     private Long userId;
 

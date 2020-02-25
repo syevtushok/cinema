@@ -1,6 +1,9 @@
 package mate.academy.cinema.dto.response;
 
+import javax.validation.constraints.NotEmpty;
+
 public class MovieResponseDto {
+    @NotEmpty
     private String title;
     private String description;
 

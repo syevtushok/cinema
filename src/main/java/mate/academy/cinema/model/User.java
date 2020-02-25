@@ -1,10 +1,15 @@
 package mate.academy.cinema.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +22,24 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
+    public User() {
+        roles = new HashSet<>();
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 
     public byte[] getSalt() {
         return salt;
@@ -29,9 +52,9 @@ public class User {
     @Override
     public String toString() {
         return "User{"
-                + "id=" + id
-                + ", email='" + email + '\''
-                + ", password='" + password + '\'' + '}';
+               + "id=" + id
+               + ", email='" + email + '\''
+               + ", password='" + password + '\'' + '}';
     }
 
     public Long getId() {
