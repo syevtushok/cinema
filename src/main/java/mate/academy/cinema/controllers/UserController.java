@@ -1,5 +1,7 @@
 package mate.academy.cinema.controllers;
 
+import javax.validation.Valid;
+
 import mate.academy.cinema.dto.request.UserRequestDto;
 import mate.academy.cinema.dto.response.UserResponseDto;
 import mate.academy.cinema.model.User;
@@ -21,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto) {
+    public UserResponseDto createUser(@RequestBody @Valid UserRequestDto userRequestDto) {
         User user = new User();
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());

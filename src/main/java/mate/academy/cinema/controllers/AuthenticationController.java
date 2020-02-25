@@ -1,5 +1,7 @@
 package mate.academy.cinema.controllers;
 
+import javax.validation.Valid;
+
 import mate.academy.cinema.dto.request.UserRequestDto;
 import mate.academy.cinema.exceptions.AuthenticationException;
 import mate.academy.cinema.service.AuthenticationService;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class AuthenticationController {
-
     private static final Logger LOGGER = LogManager.getLogger(AuthenticationService.class);
     private AuthenticationService authenticationService;
 
@@ -22,7 +23,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserRequestDto userRequestDto) {
+    public String login(@RequestBody @Valid UserRequestDto userRequestDto) {
         try {
             authenticationService.login(userRequestDto.getEmail(), userRequestDto.getPassword());
             return "Welcome, " + userRequestDto.getEmail() + "!";
@@ -34,8 +35,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody UserRequestDto userRequestDto) {
-        authenticationService.register(userRequestDto.getEmail(), userRequestDto.getPassword());
+    public String register(@RequestBody @Valid UserRequestDto userRequestDto) {
+        authenticationService.register(userRequestDto.getEmail(),
+                userRequestDto.getPassword());
         return "Congratulations! Registration was successful";
     }
 }

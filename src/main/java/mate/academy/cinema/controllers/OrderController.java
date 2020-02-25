@@ -1,10 +1,12 @@
 package mate.academy.cinema.controllers;
 
+import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import mate.academy.cinema.dto.request.OrderRequestDto;
+import javax.validation.Valid;
+
 import mate.academy.cinema.dto.response.OrderResponseDto;
 import mate.academy.cinema.dto.response.TicketResponseDto;
 import mate.academy.cinema.model.Order;
@@ -12,7 +14,6 @@ import mate.academy.cinema.model.Ticket;
 import mate.academy.cinema.service.OrderService;
 import mate.academy.cinema.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +32,14 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public OrderResponseDto completeOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        Order order = orderService.completeOrder(userService.getById(orderRequestDto.getUserId()));
+    public OrderResponseDto completeOrder(@RequestBody @Valid Principal principal) {
+        Order order = orderService.completeOrder(userService.findByEmail(principal.getName()));
         return getOrderResponseDto(order);
     }
 
-    @GetMapping("/{userId}")
-    public List<Order> getAllOrders(@PathVariable Long userId) {
-        return orderService.getOrderHistory(userService.getById(userId));
+    @GetMapping
+    public List<Order> getAllOrders(Principal principal) {
+        return orderService.getOrderHistory(userService.findByEmail(principal.getName()));
     }
 
     private OrderResponseDto getOrderResponseDto(Order order) {

@@ -1,7 +1,12 @@
 package mate.academy.cinema.dto.request;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 public class CinemaHallRequestDto {
+    @Min(5)
     private int capacity;
+    @NotEmpty
     private String description;
 
     public int getCapacity() {

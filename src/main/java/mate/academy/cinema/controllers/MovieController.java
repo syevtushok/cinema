@@ -3,6 +3,8 @@ package mate.academy.cinema.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import mate.academy.cinema.dto.request.MovieRequestDto;
 import mate.academy.cinema.dto.response.MovieResponseDto;
 import mate.academy.cinema.model.Movie;
@@ -23,7 +25,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public MovieResponseDto createMovie(@RequestBody MovieRequestDto movieRequestDto) {
+    public MovieResponseDto createMovie(@RequestBody @Valid MovieRequestDto movieRequestDto) {
         Movie movie = new Movie();
         movie.setTitle(movieRequestDto.getTitle());
         movie.setDescription(movieRequestDto.getDescription());

@@ -1,8 +1,11 @@
 package mate.academy.cinema.dto.request;
 
+import javax.validation.constraints.NotEmpty;
+
 public class MovieSessionRequestDto {
     public Long movieId;
     public Long cinemaHallId;
+    @NotEmpty
     public String showTime;
 
     public Long getMovieId() {

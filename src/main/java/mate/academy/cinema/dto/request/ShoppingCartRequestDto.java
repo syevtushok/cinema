@@ -1,6 +1,9 @@
 package mate.academy.cinema.dto.request;
 
+import javax.validation.constraints.NotEmpty;
+
 public class ShoppingCartRequestDto {
+    @NotEmpty
     private Long userId;
     private Long movieSessionId;
 
