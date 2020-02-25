@@ -1,9 +1,6 @@
 package mate.academy.cinema.dto.response;
 
-import javax.validation.constraints.NotEmpty;
-
 public class CinemaHallResponseDto {
-    @NotEmpty
     private int capacity;
     private String description;
 
